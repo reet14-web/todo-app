@@ -1,6 +1,7 @@
 const express =require ("express");
-const {createtodo, updatetodo}=require("./types");
+const {createTodo, updateTodo}=require("./types");
 const { todo } = require("./db");
+const cors=require("cors");
 const app=express();
 app.use(express.json());//will be able to pass a body if its a json body,allows to passs all forms of inputs
 //body{expected
@@ -8,13 +9,14 @@ app.use(express.json());//will be able to pass a body if its a json body,allows 
 //descrition:string
     //
 //}
+app.use(cors());
 
 
 
 
 app.post("/todo" , async function (req,res){//creating todo
 const createPayload=req.body;
-const parsedPayload=createtodo.safeParse(createPayload);
+const parsedPayload=createTodo.safeParse(createPayload);
 if(!parsedPayload.success){
     res.status(411).json({
         msg:"you sent the wrong  input",
@@ -35,19 +37,19 @@ res.json({
 //creating mongidb ,putting something mongodb,updating somthing in mongodb,and getting something from mongodb
 })
 app.get("/todos" , async function(req,res){//get todo
-const todos =  await todo.find({
+//const todos =  await todo.find({
 
-});
+//});
 res.json({
-     todos//promise,its a promise which will happen 
+     todos:[]//promise,its a promise which will happen 
 
 }) 
 })
 //
 app.put("/completed" , async function(req,res){//marking to put a completed todo
-  const updatepayload=req.body;
-  const parsepayload=updatetodo.safeParse(updatepayload);
-  if(!parsepayload.success){
+  const updatePayload=req.body;
+  const parsePayload=updatetodo.safeParse(updatePayload);
+  if(!parsePayload.success){
     res.status(411).json({
         msg:"wrong input"
     })
